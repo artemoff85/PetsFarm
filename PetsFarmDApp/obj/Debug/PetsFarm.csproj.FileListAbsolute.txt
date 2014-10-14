@@ -1,0 +1,8 @@
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\bin\Debug\PetsFarm.exe.config
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\bin\Debug\PetsFarm.exe
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\bin\Debug\PetsFarm.pdb
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.Form1.resources
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.Properties.Resources.resources
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.csproj.GenerateResource.Cache
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.exe
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.pdb
