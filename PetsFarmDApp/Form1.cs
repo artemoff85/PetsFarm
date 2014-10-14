@@ -45,11 +45,7 @@ namespace PetsFarm
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            //pictureBox1.CreateGraphics().DrawRectangle(aPen, 5, 5, 100, 100);
-            //using (Pen pen = new Pen(Color.Red, 2))
-            //{
             e.Graphics.DrawRectangle(aPen, 5, 5, 100, 100);
-            //}
         }
     }
 }
