@@ -16,7 +16,7 @@ namespace PetsFarm.PD
 
         public override String doVoice()
         {
-            return base.doVoice() + "Maoooy!";
+            return base.doVoice() + "Mawoo!";
         }
     }
 }
