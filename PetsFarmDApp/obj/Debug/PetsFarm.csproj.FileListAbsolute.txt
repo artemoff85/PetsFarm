@@ -6,3 +6,4 @@ C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.Propert
 C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.csproj.GenerateResource.Cache
 C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.exe
 C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.pdb
+C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\PetsFarm.csprojResolveAssemblyReference.cache

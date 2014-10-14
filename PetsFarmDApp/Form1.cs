@@ -15,11 +15,15 @@ namespace PetsFarm
     {
         cPet MyPet;
         Pen aPen;
+        Brush aBrush;
+        Font aFont;
 
         public Form1()
         {
             InitializeComponent();
             aPen = new Pen(Color.Red, 2);
+            aBrush = new SolidBrush(Color.Green);
+            aFont = new Font("System", 10);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -45,7 +49,9 @@ namespace PetsFarm
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawRectangle(aPen, 5, 5, 100, 100);
+            //e.Graphics.DrawRectangle(aPen, 5, 5, 20, 20);
+            e.Graphics.FillRectangle(aBrush, 5, 5, 15, 15);
+            e.Graphics.DrawString("d", aFont, Brushes.White, new Point(5, 5));
         }
     }
 }
