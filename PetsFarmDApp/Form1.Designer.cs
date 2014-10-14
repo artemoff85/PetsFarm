@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication1
+﻿namespace PetsFarm
 {
     partial class Form1
     {

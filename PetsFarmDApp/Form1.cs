@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApplication1.PD;
+using PetsFarm.PD;
 
-namespace WindowsFormsApplication1
+namespace PetsFarm
 {
     public partial class Form1 : Form
     {

@@ -1,6 +1,0 @@
-C:\Users\artem\Documents\GitHub\PetsFarm\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
-C:\Users\artem\Documents\GitHub\PetsFarm\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
-C:\Users\artem\Documents\GitHub\PetsFarm\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
-C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\bin\Debug\WindowsFormsApplication1.exe.config
-C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\WindowsFormsApplication1.exe
-C:\Users\artem\Documents\GitHub\PetsFarm\PetsFarmDApp\obj\Debug\WindowsFormsApplication1.pdb

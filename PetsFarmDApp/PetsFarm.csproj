@@ -7,8 +7,8 @@
     <ProjectGuid>{8E36B105-2267-41BD-8532-D73BA2ECBA74}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WindowsFormsApplication1</RootNamespace>
-    <AssemblyName>WindowsFormsApplication1</AssemblyName>
+    <RootNamespace>PetsFarm</RootNamespace>
+    <AssemblyName>PetsFarm</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -66,6 +66,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
