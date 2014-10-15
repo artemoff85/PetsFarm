@@ -63,7 +63,7 @@ namespace PetsFarm
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
             aFont = new Font("System", 10);
-            aFarm = new cFarm(10, 10, 10);
+            aFarm = new cFarm(20, 20, 10);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -81,6 +81,24 @@ namespace PetsFarm
         {
             MouseEventArgs mouseEvnt = (MouseEventArgs)e;
             lbVoice.Text = GetFarmClick(mouseEvnt.Location, aFarm, iPxCellSize);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            listBox1.Items.AddRange(aFarm.doTick().ToArray());
+            //aFarm.doTick().ToArray();
+            pictureBox1.Refresh();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            timer1.Enabled = true;
         }
     }
 }

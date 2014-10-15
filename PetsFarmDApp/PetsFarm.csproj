@@ -54,6 +54,7 @@
     <Compile Include="PD\cDog.cs" />
     <Compile Include="PD\cFarm.cs" />
     <Compile Include="PD\cPet.cs" />
+    <Compile Include="PD\cRandomInt.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

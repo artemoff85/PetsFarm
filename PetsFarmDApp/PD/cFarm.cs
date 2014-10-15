@@ -11,13 +11,18 @@ namespace PetsFarm.PD
         private int iPetSCat = 1;
         private int iPetSDog = 2;
         private cPet[,] farmMap = null;
+        private List<cPet> petsList = null;
+
         public cFarm(int _cols, int _rows, int _petsCount)
         {
             //fill farm by empty cells
             cPet[,] _Farm = new cPet[_cols, _rows];
+            petsList = new List<cPet>();
+
             for (int c = 0; c < _cols; c++)
                 for (int r = 0; r < _rows; r++)
                     _Farm[c, r] = null;
+            farmMap = _Farm;
             //add pets to farm
             Random rPet = new Random();
             Random rCoord = new Random();
@@ -35,16 +40,25 @@ namespace PetsFarm.PD
                 iPet = rPet.Next(1, 3);
                 if (iPet == iPetSCat)
                 {
-                    _Farm[rCols[i], rRows[i]] = new cCat("Kitty");
+                    petsList.Add(new cCat(this, rCols[i], rRows[i], "Kitty" + rCols[i].ToString() + rRows[i].ToString()));
                 }
                 if (iPet == iPetSDog)
                 {
-                    _Farm[rCols[i], rRows[i]] = new cDog("Doge");
+                    petsList.Add(new cDog(this, rCols[i], rRows[i], "Doge" + rCols[i].ToString() + rRows[i].ToString()));
                 }
             }
-            farmMap = _Farm;
-
         }
+
+        //Function to get random number
+        /*private readonly Random getrandom = new Random();
+        private readonly object syncLock = new object();
+        public int getRandomNumber(int min, int max)
+        {
+            lock (syncLock)
+            { // synchronize
+                return getrandom.Next(min, max);
+            }
+        }*/
 
         public int getFarmCols()
         {
@@ -62,6 +76,31 @@ namespace PetsFarm.PD
                 oResult = farmMap[_col, _row];
             }
             return oResult;
+        }
+        public void setPetOnFarmCell(int _col, int _row, cPet _pet)
+        {
+            farmMap[_col, _row] = _pet;
+        }
+        public void movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
+        {
+            if ((_nCol > 0) && (_nCol < getFarmCols()) && (_nRow > 0) && (_nRow < getFarmRows()))
+            {
+                if ((farmMap[_cCol, _cRow] != null) && (farmMap[_nCol, _nRow] == null))
+                {
+                    farmMap[_nCol, _nRow] = farmMap[_cCol, _cRow];
+                    //farmMap[_nCol, _nRow]
+                    farmMap[_cCol, _cRow] = null;
+                }
+            }
+        }
+        public List<String> doTick()
+        {
+            List<String> sLog = new List<String>();
+            foreach(cPet aPet in petsList)
+            {
+                sLog.Add(aPet.doTick());
+            }
+            return sLog;
         }
     }
 }

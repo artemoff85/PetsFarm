@@ -8,10 +8,9 @@ namespace PetsFarm.PD
 {
     class cCat:cPet
     {
-        public cCat(String _nickName)
-            :base(_nickName)
+        public cCat(cFarm _farmOwner, int _col, int _row, String _nickName)
+            :base(_farmOwner, _col, _row, _nickName)
         {
-            //iPetType = 1;
             sPetType = "k";
         }
 

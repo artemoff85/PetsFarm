@@ -8,13 +8,19 @@ namespace PetsFarm.PD
 {
     class cPet
     {
+        private cFarm farmOwner;
+        private int iCol;
+        private int iRow;
         private String nickName;
-        //protected int iPetType;
         protected String sPetType;
 
-        public cPet(String _nickName)
+        public cPet(cFarm _farmOwner, int _col, int _row, String _nickName)
         {
             nickName = _nickName;
+            iCol = _col;
+            iRow = _row;
+            farmOwner = _farmOwner;
+            farmOwner.setPetOnFarmCell(iCol, iRow, this);
         }
 
         public String getPetSimbol()
@@ -26,5 +32,69 @@ namespace PetsFarm.PD
         {
             return nickName + ": ";
         }
+
+        public void moveUp()
+        {
+            if (iRow - 1 > 0)
+            {
+                farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1);
+                iRow = iRow - 1;
+            }
+        }
+
+        public void moveRight()
+        {
+            if (iCol + 1 < farmOwner.getFarmCols())
+            {
+                farmOwner.movePetOnFarmCell(iCol, iRow, iCol + 1, iRow);
+                iCol = iCol + 1;
+            }
+        }
+
+        public void moveLeft()
+        {
+            if (iCol - 1 > 0)
+            {
+                farmOwner.movePetOnFarmCell(iCol, iRow, iCol - 1, iRow);
+                iCol = iCol - 1;
+            }
+        }
+
+        public void moveDown()
+        {
+            if (iRow + 1 < farmOwner.getFarmCols())
+            {
+                farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow + 1);
+                iRow = iRow + 1;
+            }
+        }
+
+        public void doTick1()
+        {
+            
+        }
+
+        public String doTick()
+        {
+            int iMove = cRandomInt.GetRandomNumber(1, 5);
+            if (iMove == 1)
+            {
+                moveUp();
+            }
+            if (iMove == 2)
+            {
+                moveRight();
+            }
+            if (iMove == 3)
+            {
+                moveLeft();
+            }
+            if (iMove == 4)
+            {
+                moveDown();
+            }
+            return nickName + " move " + iMove.ToString();
+        }
+
     }
 }
