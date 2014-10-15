@@ -16,8 +16,8 @@ namespace PetsFarm
         Pen aPen;
         Brush aBrush;
         Font aFont;
-
         cFarm aFarm;
+
         int iPxCellSize = 15;
         int iColsCount = 20;
         int iRowsCount = 20;
@@ -90,7 +90,6 @@ namespace PetsFarm
         {
             listBox1.Items.Clear();
             listBox1.Items.AddRange(aFarm.doTick().ToArray());
-            //aFarm.doTick().ToArray();
             pictureBox1.Refresh();
         }
 
