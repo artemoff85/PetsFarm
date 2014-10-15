@@ -22,9 +22,9 @@ namespace PetsFarm
         cPet[,] aFarm;
         int iPetSCat = 1;
         int iPetSDog = 2;
+        int iPxCellSize = 15;
         //int iPetCat = 3;
         //int iPetDog = 4;
-
 
         private cPet[,] InitFarm(int _cols, int _rows, int _petsCount)
         {
@@ -58,9 +58,9 @@ namespace PetsFarm
             return _aFarm;
         }
 
-        private void RenderFarm(cPet[,] _aFarm, Graphics gCanvas)
+        private void RenderFarm(cPet[,] _aFarm, Graphics gCanvas, int _iPxCellSize)
         {
-            int _size = 15;
+            //int _size = 15;
             int _cols = _aFarm.GetLength(0);
             int _rows = _aFarm.GetLength(1);
             int iFarmX = 0;
@@ -69,9 +69,9 @@ namespace PetsFarm
             for (int c = 0; c < _cols; c++)
                 for (int r = 0; r < _rows; r++)
                 {
-                    iFarmX = c * _size;
-                    iFarmY = r * _size;
-                    gCanvas.FillRectangle(aBrush, iFarmX, iFarmY, _size, _size);
+                    iFarmX = c * _iPxCellSize;
+                    iFarmY = r * _iPxCellSize;
+                    gCanvas.FillRectangle(aBrush, iFarmX, iFarmY, _iPxCellSize, _iPxCellSize);
                     if (_aFarm[c, r] != null)
                     {
                         gCanvas.DrawString(_aFarm[c, r].getPetSimbol(), aFont, Brushes.White, new Point(iFarmX, iFarmY));
@@ -90,30 +90,30 @@ namespace PetsFarm
 
         private void button1_Click(object sender, EventArgs e)
         {
-            /*
-            MyPet = null;
-            switch (new Random().Next(1, 3))
-            {
-                case 1:
-                    MyPet = new cCat("Murka");
-                    break;
-                case 2:
-                    MyPet = new cDog("Zhuchka");
-                    break;
-
-            }
-            if (MyPet != null)
-            {
-                label1.Text = MyPet.doVoice();
-            }*/
-
             aFarm = InitFarm(10, 10, 9);
             pictureBox1.Refresh();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            RenderFarm(aFarm, e.Graphics);
+            RenderFarm(aFarm, e.Graphics, iPxCellSize);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            Point coordinates = me.Location;
+            int iPosX = me.Location.X / iPxCellSize;
+            int iPosY = me.Location.Y / iPxCellSize;
+            cPet aPet = aFarm[iPosX, iPosY];
+            if (aPet != null)
+            {
+                lbVoice.Text = aPet.doVoice();
+            }
+            else
+            {
+                lbVoice.Text = "___";
+            }
         }
     }
 }
