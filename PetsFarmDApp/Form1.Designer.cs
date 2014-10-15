@@ -49,9 +49,9 @@
             this.lbVoice.AutoSize = true;
             this.lbVoice.Location = new System.Drawing.Point(114, 22);
             this.lbVoice.Name = "lbVoice";
-            this.lbVoice.Size = new System.Drawing.Size(37, 13);
+            this.lbVoice.Size = new System.Drawing.Size(25, 13);
             this.lbVoice.TabIndex = 1;
-            this.lbVoice.Text = "_____";
+            this.lbVoice.Text = "___";
             // 
             // pictureBox1
             // 
