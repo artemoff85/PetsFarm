@@ -11,7 +11,8 @@ namespace PetsFarm.PD
         public cCat(String _nickName)
             :base(_nickName)
         {
-
+            //iPetType = 1;
+            sPetType = "k";
         }
 
         public override String doVoice()

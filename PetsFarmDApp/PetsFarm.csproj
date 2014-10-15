@@ -52,7 +52,7 @@
     </Compile>
     <Compile Include="PD\cCat.cs" />
     <Compile Include="PD\cDog.cs" />
-    <Compile Include="PD\cTier.cs" />
+    <Compile Include="PD\cPet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

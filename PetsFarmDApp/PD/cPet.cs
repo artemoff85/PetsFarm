@@ -8,11 +8,18 @@ namespace PetsFarm.PD
 {
     class cPet
     {
-        public String nickName;
+        private String nickName;
+        //protected int iPetType;
+        protected String sPetType;
 
         public cPet(String _nickName)
         {
             nickName = _nickName;
+        }
+
+        public String getPetSimbol()
+        {
+            return sPetType;
         }
 
         public virtual String doVoice()

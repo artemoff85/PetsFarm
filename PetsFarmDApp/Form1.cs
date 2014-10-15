@@ -13,25 +13,26 @@ namespace PetsFarm
 {
     public partial class Form1 : Form
     {
-        cPet MyPet;
+        //cPet MyPet;
         Pen aPen;
         Brush aBrush;
         Font aFont;
 
-        int[,] aFarm;
+        //int[,] aFarm;
+        cPet[,] aFarm;
         int iPetSCat = 1;
         int iPetSDog = 2;
-        int iPetCat = 3;
-        int iPetDog = 4;
+        //int iPetCat = 3;
+        //int iPetDog = 4;
 
 
-        private int[,] InitFarm(int _cols, int _rows, int _petsCount)
+        private cPet[,] InitFarm(int _cols, int _rows, int _petsCount)
         {
             //fill farm by empty cells
-            int[,] _aFarm = new int[_cols, _rows];
+            cPet[,] _aFarm = new cPet[_cols, _rows];
             for (int c = 0; c < _cols; c++)
                 for (int r = 0; r < _rows; r++)
-                    _aFarm[c, r] = 0;
+                    _aFarm[c, r] = null;
             //add pets to farm
             Random rPet = new Random();
             Random rCoord = new Random();
@@ -43,13 +44,21 @@ namespace PetsFarm
             for (int i = 0; i < rRows.Length; i++)
                 rRows[i] = rCoord.Next(0, _rows);
 
+            int iPet = 0;
             for (int i = 0; i < _petsCount + 1; i++)
-                _aFarm[rCols[i], rRows[i]] = rPet.Next(1, 3);
-
+            {
+                iPet = rPet.Next(1, 3);
+                if (iPet == iPetSCat){
+                    _aFarm[rCols[i], rRows[i]] = new cCat("Kitty");
+                }
+                if (iPet == iPetSDog){
+                    _aFarm[rCols[i], rRows[i]] = new cDog("Doge");
+                }
+            }
             return _aFarm;
         }
 
-        private void RenderFarm(int[,] _aFarm, Graphics gCanvas)
+        private void RenderFarm(cPet[,] _aFarm, Graphics gCanvas)
         {
             int _size = 15;
             int _cols = _aFarm.GetLength(0);
@@ -63,13 +72,9 @@ namespace PetsFarm
                     iFarmX = c * _size;
                     iFarmY = r * _size;
                     gCanvas.FillRectangle(aBrush, iFarmX, iFarmY, _size, _size);
-                    if (_aFarm[c, r] == iPetSCat)
+                    if (_aFarm[c, r] != null)
                     {
-                        gCanvas.DrawString("k", aFont, Brushes.White, new Point(iFarmX, iFarmY));
-                    }
-                    if (_aFarm[c, r] == iPetSDog)
-                    {
-                        gCanvas.DrawString("d", aFont, Brushes.White, new Point(iFarmX, iFarmY));
+                        gCanvas.DrawString(_aFarm[c, r].getPetSimbol(), aFont, Brushes.White, new Point(iFarmX, iFarmY));
                     }
                 }
         }
