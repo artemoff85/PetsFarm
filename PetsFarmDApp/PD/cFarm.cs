@@ -19,26 +19,23 @@ namespace PetsFarm.PD
             //fill farm by empty cells
             cPet[,] _Farm = new cPet[_cols, _rows];
             petsList = new List<cPet>();
-
             for (int c = 0; c < _cols; c++)
                 for (int r = 0; r < _rows; r++)
                     _Farm[c, r] = null;
             farmMap = _Farm;
             //add pets to farm
-            Random rPet = new Random();
-            Random rCoord = new Random();
             int[] rCols = new int[_petsCount];
             for (int i = 0; i < rCols.Length; i++)
-                rCols[i] = rCoord.Next(0, _cols);
+                rCols[i] = cRandomInt.GetRandomNumber(0, _cols);
 
             int[] rRows = new int[_petsCount];
             for (int i = 0; i < rRows.Length; i++)
-                rRows[i] = rCoord.Next(0, _rows);
+                rRows[i] = cRandomInt.GetRandomNumber(0, _rows);
 
             int iPet = 0;
             for (int i = 0; i < _petsCount; i++)
             {
-                iPet = rPet.Next(1, 3);
+                iPet = cRandomInt.GetRandomNumber(1, 3);//rPet.Next(1, 3);
                 if (iPet == iPetSCat)
                 {
                     petsList.Add(new cCat(this, rCols[i], rRows[i], "Kitty" + rCols[i].ToString() + rRows[i].ToString()));
@@ -49,17 +46,6 @@ namespace PetsFarm.PD
                 }
             }
         }
-
-        //Function to get random number
-        /*private readonly Random getrandom = new Random();
-        private readonly object syncLock = new object();
-        public int getRandomNumber(int min, int max)
-        {
-            lock (syncLock)
-            { // synchronize
-                return getrandom.Next(min, max);
-            }
-        }*/
 
         public int getFarmCols()
         {

@@ -30,7 +30,7 @@ namespace PetsFarm
             iPxCellSize = 15;
             iColsCount = 20;
             iRowsCount = 20;
-            iPetsCount = 20;
+            iPetsCount = 50;
             selectedIndex = 0;
             selectedPetNickName = String.Empty;
             aPen = new Pen(Color.Red, 2);
@@ -49,6 +49,9 @@ namespace PetsFarm
             {
                 cPet aPet = (cPet)aCell;
                 sResult = aPet.doVoice();
+                aFarm.selectPet(aPet);
+                //listBox1.SetSelected(selectedIndex, false);
+                selectedIndex = -1;
             }
             return sResult;
         }
@@ -81,7 +84,7 @@ namespace PetsFarm
             listBox1.Items.Clear();
             listBox1.Items.AddRange(aFarm.doTick().ToArray());
             pictureBox1.Refresh();
-            listBox1.SetSelected(selectedIndex, true);
+            if ((aFarm.getSelectedPet() != null) && (selectedIndex > 0)) { listBox1.SetSelected(selectedIndex, true); }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -101,9 +104,10 @@ namespace PetsFarm
 
         private void listBox1_Click(object sender, EventArgs e)
         {
-            selectedIndex = listBox1.SelectedIndex;
+            /*selectedIndex = listBox1.SelectedIndex;
             selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
             aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
+            lbVoice.Text = aFarm.getSelectedPet().doVoice();*/
         }
     }
 }
