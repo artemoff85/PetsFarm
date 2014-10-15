@@ -12,6 +12,7 @@ namespace PetsFarm.PD
         private int iPetSDog = 2;
         private cPet[,] farmMap = null;
         private List<cPet> petsList = null;
+        private cPet selectedPet = null;
 
         public cFarm(int _cols, int _rows, int _petsCount)
         {
@@ -77,21 +78,40 @@ namespace PetsFarm.PD
             }
             return oResult;
         }
+        public cPet getFarmPetByNickname(String sNickname)
+        {
+            cPet aPet = null;
+            foreach (cPet p in petsList)
+            {
+                if (p.getPetNickname() == sNickname) { aPet = p; }
+            }
+            return aPet;
+        }
+        public void selectPet(cPet aPet)
+        {
+            selectedPet = aPet;
+        }
+        public cPet getSelectedPet()
+        {
+            return selectedPet;
+        }
         public void setPetOnFarmCell(int _col, int _row, cPet _pet)
         {
             farmMap[_col, _row] = _pet;
         }
-        public void movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
+        public Boolean movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
         {
-            if ((_nCol > 0) && (_nCol < getFarmCols()) && (_nRow > 0) && (_nRow < getFarmRows()))
+            Boolean bResult = false;
+            if ((_nCol >= 0) && (_nCol <= getFarmCols()) && (_nRow >= 0) && (_nRow <= getFarmRows()))
             {
                 if ((farmMap[_cCol, _cRow] != null) && (farmMap[_nCol, _nRow] == null))
                 {
                     farmMap[_nCol, _nRow] = farmMap[_cCol, _cRow];
-                    //farmMap[_nCol, _nRow]
                     farmMap[_cCol, _cRow] = null;
+                    bResult = true;
                 }
             }
+            return bResult;
         }
         public List<String> doTick()
         {

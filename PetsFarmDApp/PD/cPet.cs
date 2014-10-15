@@ -27,6 +27,20 @@ namespace PetsFarm.PD
         {
             return sPetType;
         }
+        public String getPetNickname()
+        {
+            return nickName;
+        }
+        public int getPetCol()
+        {
+            return iCol;
+        }
+        public int getPetRow()
+        {
+            return iRow;
+        }
+
+
 
         public virtual String doVoice()
         {
@@ -35,10 +49,12 @@ namespace PetsFarm.PD
 
         public void moveUp()
         {
-            if (iRow - 1 > 0)
+            if (iRow - 1 >= 0)
             {
-                farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1);
-                iRow = iRow - 1;
+                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1))
+                {
+                    iRow = iRow - 1;
+                }
             }
         }
 
@@ -46,17 +62,21 @@ namespace PetsFarm.PD
         {
             if (iCol + 1 < farmOwner.getFarmCols())
             {
-                farmOwner.movePetOnFarmCell(iCol, iRow, iCol + 1, iRow);
-                iCol = iCol + 1;
+                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol + 1, iRow))
+                {
+                    iCol = iCol + 1;
+                }
             }
         }
 
         public void moveLeft()
         {
-            if (iCol - 1 > 0)
+            if (iCol - 1 >= 0)
             {
-                farmOwner.movePetOnFarmCell(iCol, iRow, iCol - 1, iRow);
-                iCol = iCol - 1;
+                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol - 1, iRow))
+                {
+                    iCol = iCol - 1;
+                }
             }
         }
 
@@ -64,8 +84,10 @@ namespace PetsFarm.PD
         {
             if (iRow + 1 < farmOwner.getFarmCols())
             {
-                farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow + 1);
-                iRow = iRow + 1;
+                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow + 1))
+                {
+                    iRow = iRow + 1;
+                }
             }
         }
 
@@ -76,7 +98,7 @@ namespace PetsFarm.PD
 
         public String doTick()
         {
-            int iMove = cRandomInt.GetRandomNumber(1, 5);
+            int iMove = cRandomInt.GetRandomNumber(0, 5);
             if (iMove == 1)
             {
                 moveUp();
@@ -93,7 +115,7 @@ namespace PetsFarm.PD
             {
                 moveDown();
             }
-            return nickName + " move " + iMove.ToString();
+            return nickName + ":move " + iMove.ToString();
         }
 
     }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PetsFarm.UI;
 using PetsFarm.PD;
 
 namespace PetsFarm
@@ -18,32 +18,25 @@ namespace PetsFarm
         Font aFont;
         cFarm aFarm;
 
-        int iPxCellSize = 15;
-        int iColsCount = 20;
-        int iRowsCount = 20;
-        int iPetsCount = 20;
+        int iPxCellSize;
+        int iColsCount;
+        int iRowsCount;
+        int iPetsCount;
+        int selectedIndex;
+        String selectedPetNickName;
 
-        private void RenderFarm(cFarm _aFarm, Graphics gCanvas, int _iPxCellSize)
+        private void InitFormVars()
         {
-            int _cols = _aFarm.getFarmCols();
-            int _rows = _aFarm.getFarmRows();
-            int iFarmX = 0;
-            int iFarmY = 0;
-            object aCell = null;
-            cPet aPet = null;
-            for (int c = 0; c < _cols; c++)
-                for (int r = 0; r < _rows; r++)
-                {
-                    iFarmX = c * _iPxCellSize;
-                    iFarmY = r * _iPxCellSize;
-                    gCanvas.FillRectangle(aBrush, iFarmX, iFarmY, _iPxCellSize, _iPxCellSize);
-                    aCell = _aFarm.getFarmCell(c, r);
-                    if (aCell != null)
-                    {
-                        aPet = (cPet)aCell;
-                        gCanvas.DrawString(aPet.getPetSimbol(), aFont, Brushes.White, new Point(iFarmX, iFarmY));
-                    }
-                }
+            iPxCellSize = 15;
+            iColsCount = 20;
+            iRowsCount = 20;
+            iPetsCount = 20;
+            selectedIndex = 0;
+            selectedPetNickName = String.Empty;
+            aPen = new Pen(Color.Red, 2);
+            aBrush = new SolidBrush(Color.Green);
+            aFont = new Font("System", 10);
+            aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
         }
 
         private String GetFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
@@ -63,21 +56,18 @@ namespace PetsFarm
         public Form1()
         {
             InitializeComponent();
-            aPen = new Pen(Color.Red, 2);
-            aBrush = new SolidBrush(Color.Green);
-            aFont = new Font("System", 10);
-            aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
+            InitFormVars();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
+            InitFormVars();
             pictureBox1.Refresh();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            RenderFarm(aFarm, e.Graphics, iPxCellSize);
+            cRenderer.RenderFarm(aFarm, e.Graphics, iPxCellSize);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -91,6 +81,7 @@ namespace PetsFarm
             listBox1.Items.Clear();
             listBox1.Items.AddRange(aFarm.doTick().ToArray());
             pictureBox1.Refresh();
+            listBox1.SetSelected(selectedIndex, true);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -101,6 +92,18 @@ namespace PetsFarm
         private void button3_Click(object sender, EventArgs e)
         {
             timer1.Enabled = true;
+        }
+
+        private String getSelectedPetNickName(String sLogLine)
+        {
+            return sLogLine.Split(new Char[] { ':' })[0];
+        }
+
+        private void listBox1_Click(object sender, EventArgs e)
+        {
+            selectedIndex = listBox1.SelectedIndex;
+            selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
+            aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
         }
     }
 }

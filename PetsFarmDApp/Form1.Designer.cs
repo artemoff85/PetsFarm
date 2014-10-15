@@ -60,6 +60,7 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Black;
             this.pictureBox1.Location = new System.Drawing.Point(12, 54);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(506, 438);
@@ -81,6 +82,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(224, 446);
             this.listBox1.TabIndex = 4;
+            this.listBox1.Click += new System.EventHandler(this.listBox1_Click);
             // 
             // button2
             // 
