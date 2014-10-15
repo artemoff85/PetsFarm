@@ -19,6 +19,9 @@ namespace PetsFarm
 
         cFarm aFarm;
         int iPxCellSize = 15;
+        int iColsCount = 20;
+        int iRowsCount = 20;
+        int iPetsCount = 20;
 
         private void RenderFarm(cFarm _aFarm, Graphics gCanvas, int _iPxCellSize)
         {
@@ -63,12 +66,12 @@ namespace PetsFarm
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
             aFont = new Font("System", 10);
-            aFarm = new cFarm(20, 20, 10);
+            aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            aFarm = new cFarm(10, 10, 10);
+            aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
             pictureBox1.Refresh();
         }
 
