@@ -77,6 +77,7 @@ namespace PetsFarm
         {
             MouseEventArgs mouseEvnt = (MouseEventArgs)e;
             lbVoice.Text = GetFarmClick(mouseEvnt.Location, aFarm, iPxCellSize);
+            pictureBox1.Refresh();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -94,7 +95,9 @@ namespace PetsFarm
 
         private void button3_Click(object sender, EventArgs e)
         {
-            timer1.Enabled = true;
+            timer1.Enabled = !timer1.Enabled;
+            if (timer1.Enabled) { button3.Text = "Stop"; }
+            else { button3.Text = "Start"; }
         }
 
         private String getSelectedPetNickName(String sLogLine)
@@ -108,6 +111,17 @@ namespace PetsFarm
             selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
             aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
             lbVoice.Text = aFarm.getSelectedPet().doVoice();*/
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedIndex = listBox1.SelectedIndex;
+            if (selectedIndex >= 0)
+            {
+                selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
+                aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
+                lbVoice.Text = aFarm.getSelectedPet().doVoice();
+            }
         }
     }
 }

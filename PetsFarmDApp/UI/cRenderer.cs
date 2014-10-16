@@ -30,18 +30,22 @@ namespace PetsFarm.UI
             }
         }
 
+        private static Brush RenderPetGender(cPet aPet)
+        {
+            Brush bResult = femaleColor;
+            if (aPet.IsPetMale()) { bResult = maleColor; }
+            return bResult;
+        }
+
         private static void RenderPetsLove(cPet aPet)
         {
             if (aPet.HasLove())
             {
                 gCanvas.DrawString("♥", aFontTag, Brushes.Pink, new Point(aPet.getPetCol() * iPxCellSize, aPet.getPetRow() * iPxCellSize));
             }
-            /*cPet selectedPet = aFarm.getSelectedPet();
-            if (selectedPet != null)
-            {
-                gCanvas.DrawRectangle(aPen, selectedPet.getPetCol() * iPxCellSize, selectedPet.getPetRow() * iPxCellSize, iPxCellSize, iPxCellSize);
-            }*/
         }
+
+
 
         public static void RenderFarm(cFarm _aFarm, Graphics _gCanvas, int _iPxCellSize)
         {
@@ -52,7 +56,6 @@ namespace PetsFarm.UI
             aFarm = _aFarm;
             gCanvas = _gCanvas;
             iPxCellSize = _iPxCellSize;
-
             object aCell = null;
             cPet aPet = null;
             for (int c = 0; c < _cols; c++)
@@ -65,9 +68,7 @@ namespace PetsFarm.UI
                     if (aCell != null)
                     {
                         aPet = (cPet)aCell;
-                        Brush genderBrush = null;
-                        if (aPet.IsPetMale()) { genderBrush = maleColor; } else { genderBrush = femaleColor; }
-                        gCanvas.DrawString(aPet.getPetSimbol(), aFont, genderBrush, new Point(iFarmX, iFarmY));
+                        gCanvas.DrawString(aPet.getPetSimbol(), aFont, RenderPetGender(aPet), new Point(iFarmX, iFarmY));
                         RenderPetsLove(aPet);
                     }
 
