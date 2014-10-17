@@ -18,5 +18,11 @@ namespace PetsFarm.PD
         {
             return base.doVoice() + "Mawoo!";
         }
+
+        protected override void BirthPet(int _col, int _row)
+        {
+            int i = farmOwner.getPetsCount();
+            new cCat(farmOwner, _col, _row, "Kitty" + i);
+        }
     }
 }

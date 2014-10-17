@@ -13,6 +13,7 @@ namespace PetsFarm.PD
         private cPet[,] farmMap = null;
         private List<cPet> petsList = null;
         private cPet selectedPet = null;
+        private Boolean tickLock = false;
 
         public cFarm(int _cols, int _rows, int _petsCount)
         {
@@ -38,11 +39,13 @@ namespace PetsFarm.PD
                 iPet = cRandomInt.GetRandomNumber(1, 3);//rPet.Next(1, 3);
                 if (iPet == iPetSCat)
                 {
-                    petsList.Add(new cCat(this, rCols[i], rRows[i], "Kitty" + rCols[i].ToString() + rRows[i].ToString()));
+                    //petsList.Add(new cCat(this, rCols[i], rRows[i], "Kitty" + rCols[i].ToString() + rRows[i].ToString()));
+                    new cCat(this, rCols[i], rRows[i], "Kitty" + i);
                 }
                 if (iPet == iPetSDog)
                 {
-                    petsList.Add(new cDog(this, rCols[i], rRows[i], "Doge" + rCols[i].ToString() + rRows[i].ToString()));
+                    //petsList.Add(new cDog(this, rCols[i], rRows[i], "Doge" + rCols[i].ToString() + rRows[i].ToString()));
+                    new cDog(this, rCols[i], rRows[i], "Doge" + i);
                 }
             }
         }
@@ -57,12 +60,16 @@ namespace PetsFarm.PD
         }
         public object getFarmCell(int _col, int _row)
         {
+            /*
             object oResult = null;
             if ((_col < getFarmCols()) && (_row < getFarmRows()))
             {
                 oResult = farmMap[_col, _row];
             }
+            
             return oResult;
+            */
+            return farmMap[_col, _row];
         }
         public cPet getFarmPetByNickname(String sNickname)
         {
@@ -84,27 +91,47 @@ namespace PetsFarm.PD
         public void setPetOnFarmCell(int _col, int _row, cPet _pet)
         {
             farmMap[_col, _row] = _pet;
+            petsList.Add(_pet);
         }
-        public Boolean movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
+
+        public void movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
         {
-            Boolean bResult = false;
-            if ((_nCol >= 0) && (_nCol <= getFarmCols()) && (_nRow >= 0) && (_nRow <= getFarmRows()))
+            //Boolean bResult = false;
+            if ((_nCol >= 0) && (_nCol <= getFarmCols() - 1) && (_nRow >= 0) && (_nRow <= getFarmRows() - 1))
             {
                 if ((farmMap[_cCol, _cRow] != null) && (farmMap[_nCol, _nRow] == null))
                 {
+                    farmMap[_cCol, _cRow].setPetCol(_nCol);
+                    farmMap[_cCol, _cRow].setPetRow(_nRow);
                     farmMap[_nCol, _nRow] = farmMap[_cCol, _cRow];
                     farmMap[_cCol, _cRow] = null;
-                    bResult = true;
+                    //bResult = true;
                 }
             }
-            return bResult;
+            //return bResult;
         }
+
+        public int getPetsCount()
+        {
+            return petsList.Count;
+        }
+
         public List<String> doTick()
         {
-            List<String> sLog = new List<String>();
-            foreach(cPet aPet in petsList)
+            List<String> sLog = null;
+            if (!tickLock)
             {
-                sLog.Add(aPet.doTick());
+                tickLock = true;
+                sLog = new List<String>();
+                int oldCount = petsList.Count;
+
+                //foreach (cPet aPet in petsList)
+                //{
+                for (int i = 0; i < oldCount; i++)
+                    sLog.Add(petsList[i].doTick());
+                    //sLog.Add(aPet.doTick());
+                //}
+                tickLock = false;
             }
             return sLog;
         }

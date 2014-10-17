@@ -71,7 +71,6 @@ namespace PetsFarm.UI
                         gCanvas.DrawString(aPet.getPetSimbol(), aFont, RenderPetGender(aPet), new Point(iFarmX, iFarmY));
                         RenderPetsLove(aPet);
                     }
-
                 }
             RenderSelectedPet();
         }

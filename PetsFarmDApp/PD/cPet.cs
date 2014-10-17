@@ -8,7 +8,7 @@ namespace PetsFarm.PD
 {
     class cPet
     {
-        private cFarm farmOwner;
+        protected cFarm farmOwner;
         private int iCol;
         private int iRow;
         private int iGender;
@@ -53,12 +53,21 @@ namespace PetsFarm.PD
         {
             return iRow;
         }
-
+        public void setPetCol(int _iCol)
+        {
+            iCol = _iCol;
+        }
+        public void setPetRow(int _iRow)
+        {
+            iRow = _iRow;
+        }
+        
         public virtual String doVoice()
         {
             return nickName + ": ";
         }
 
+        /*
         public void moveUp()
         {
             if (iRow - 1 >= 0)
@@ -102,6 +111,27 @@ namespace PetsFarm.PD
                 }
             }
         }
+        */
+
+        public void moveUp()
+        {
+            farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1);
+        }
+
+        public void moveRight()
+        {
+            farmOwner.movePetOnFarmCell(iCol, iRow, iCol + 1, iRow);
+        }
+
+        public void moveLeft()
+        {
+            farmOwner.movePetOnFarmCell(iCol, iRow, iCol - 1, iRow);
+        }
+
+        public void moveDown()
+        {
+            farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow + 1);
+        }
 
         private object scanCellByDirection(int iDirect)
         {
@@ -112,20 +142,19 @@ namespace PetsFarm.PD
                 {
                     oResult = farmOwner.getFarmCell(iCol, iRow - 1);
                 }
-            }
-            if (iDirect == 2)
+            }else if (iDirect == 2)
             {//right
                 if (iCol + 1 < farmOwner.getFarmCols())
-                oResult = farmOwner.getFarmCell(iCol + 1, iRow);
-            }
-            if (iDirect == 3)
+                {
+                    oResult = farmOwner.getFarmCell(iCol + 1, iRow);
+                }
+            }else if (iDirect == 3)
             {//left
                 if (iCol - 1 > 0)
                 {
                     oResult = farmOwner.getFarmCell(iCol - 1, iRow);
                 }
-            }
-            if (iDirect == 4)
+            }else if (iDirect == 4)
             {//down
                 if (iRow + 1 < farmOwner.getFarmRows())
                 {
@@ -133,6 +162,29 @@ namespace PetsFarm.PD
                 }
             }
             return oResult;
+        }
+
+        private Boolean canMoveByDirection(int iDirect)
+        {
+            //object oResult = null;
+            Boolean bResult = false;
+            if (iDirect == 1)
+            {//up
+                bResult = (iRow - 1 >= 0);
+            }
+            else if (iDirect == 2)
+            {//right
+                bResult = (iCol + 1 <= farmOwner.getFarmCols() - 1);
+            }
+            else if (iDirect == 3)
+            {//left
+                bResult = (iCol - 1 >= 0);
+            }
+            else if (iDirect == 4)
+            {//down
+                bResult = (iRow + 1 <= farmOwner.getFarmRows() - 1);
+            }
+            return bResult;
         }
 
         private void moveByDirection(int iDirect)
@@ -171,6 +223,11 @@ namespace PetsFarm.PD
             return iLoveTickCount > 0;
         }
 
+        protected virtual void BirthPet(int _col, int _row)
+        {
+            //abstract
+        }
+
         public String doTick()
         {
             String sPetState = String.Empty;
@@ -180,25 +237,66 @@ namespace PetsFarm.PD
                 object oCell = scanCellByDirection(iDirect);
                 if (oCell == null)
                 {//can move by direction
-                    moveByDirection(iDirect);
-                    sPetState = "move " + iDirect.ToString();
+                    //if can move on cell by direction
+                    if (canMoveByDirection(iDirect))
+                    {
+                        moveByDirection(iDirect);
+                        sPetState = "move " + iDirect.ToString();
+                    }
                 }
                 else
                 {
                     cPet aPet = (cPet)oCell;
                     if ((this.getPetSimbol() == aPet.getPetSimbol()) && (this.IsPetMale() && !aPet.IsPetMale()))
-                    //if (this.getPetSimbol() == aPet.getPetSimbol())
-                    {//can move by direction & fuck this pet
-                        sPetState = "LOVE!!!";// +iDirect.ToString();
-                        fuckPetByLove(aPet);
-                        //iLoveTickCount = 2;
-                    }
+                     {//can move by direction & fuck this pet
+                        //sPetState = "LOVE!!!";
+                         if (!aPet.HasLove())
+                         {
+                             fuckPetByLove(aPet);
+                         }
+                     }
                 }
             }
             else
             {
-                sPetState = "LOVE!!!";
+                //sPetState = "LOVE!!!";
                 iLoveTickCount = iLoveTickCount - 1;
+                if (!IsPetMale() && (iLoveTickCount == 1))
+                {//try birth new same pet
+                    if (iRow - 1 >= 0)
+                    {//up
+                        if (farmOwner.getFarmCell(iCol, iRow - 1) == null)
+                        {
+                            sPetState = "-- Birth!!!";
+                            BirthPet(iCol, iRow - 1);
+                        }
+                    }
+                    else if (iCol + 1 <= farmOwner.getFarmCols() - 1)
+                    {//right
+                        if (farmOwner.getFarmCell(iCol + 1, iRow) == null)
+                        {
+                            sPetState = "-- Birth!!!";
+                            BirthPet(iCol + 1, iRow);
+                        }
+                    }
+                    else if (iCol - 1 >= 0)
+                    {//left
+                        if (farmOwner.getFarmCell(iCol - 1, iRow) == null)
+                        {
+                            sPetState = "-- Birth!!!";
+                            BirthPet(iCol - 1, iRow);
+                        }
+                    }
+                    else if (iRow + 1 <= farmOwner.getFarmRows() - 1)
+                    {//down
+                        if (farmOwner.getFarmCell(iCol, iRow + 1) == null)
+                        {
+                            sPetState = "-- Birth!!!";
+                            BirthPet(iCol, iRow + 1);
+                        }
+                    }
+                }
+
             }
             return nickName + ":" + sPetState;
         }

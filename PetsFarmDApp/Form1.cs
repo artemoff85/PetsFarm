@@ -28,8 +28,8 @@ namespace PetsFarm
         private void InitFormVars()
         {
             iPxCellSize = 15;
-            iColsCount = 20;
-            iRowsCount = 20;
+            iColsCount = 10;
+            iRowsCount = 10;
             iPetsCount = 50;
             selectedIndex = 0;
             selectedPetNickName = String.Empty;
@@ -82,10 +82,15 @@ namespace PetsFarm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(aFarm.doTick().ToArray());
-            pictureBox1.Refresh();
-            if ((aFarm.getSelectedPet() != null) && (selectedIndex > 0)) { listBox1.SetSelected(selectedIndex, true); }
+            String[] sLog = aFarm.doTick().ToArray();
+            if (sLog != null)
+            {
+                listBox1.Items.Clear();
+                listBox1.Items.AddRange(sLog);
+                lbPetsCount.Text = aFarm.getPetsCount().ToString(); // listBox1.Items.Count.ToString(); //sLog.Length.ToString();
+                pictureBox1.Refresh();
+                if ((aFarm.getSelectedPet() != null) && (selectedIndex > 0)) { listBox1.SetSelected(selectedIndex, true); }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -105,14 +110,6 @@ namespace PetsFarm
             return sLogLine.Split(new Char[] { ':' })[0];
         }
 
-        private void listBox1_Click(object sender, EventArgs e)
-        {
-            /*selectedIndex = listBox1.SelectedIndex;
-            selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
-            aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
-            lbVoice.Text = aFarm.getSelectedPet().doVoice();*/
-        }
-
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             selectedIndex = listBox1.SelectedIndex;
@@ -121,6 +118,7 @@ namespace PetsFarm
                 selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
                 aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
                 lbVoice.Text = aFarm.getSelectedPet().doVoice();
+                pictureBox1.Refresh();
             }
         }
     }
