@@ -67,52 +67,6 @@ namespace PetsFarm.PD
             return nickName + ": ";
         }
 
-        /*
-        public void moveUp()
-        {
-            if (iRow - 1 >= 0)
-            {
-                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1))
-                {
-                    iRow = iRow - 1;
-                }
-            }
-        }
-
-        public void moveRight()
-        {
-            if (iCol + 1 < farmOwner.getFarmCols())
-            {
-                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol + 1, iRow))
-                {
-                    iCol = iCol + 1;
-                }
-            }
-        }
-
-        public void moveLeft()
-        {
-            if (iCol - 1 >= 0)
-            {
-                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol - 1, iRow))
-                {
-                    iCol = iCol - 1;
-                }
-            }
-        }
-
-        public void moveDown()
-        {
-            if (iRow + 1 < farmOwner.getFarmRows())
-            {
-                if (farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow + 1))
-                {
-                    iRow = iRow + 1;
-                }
-            }
-        }
-        */
-
         public void moveUp()
         {
             farmOwner.movePetOnFarmCell(iCol, iRow, iCol, iRow - 1);
@@ -187,6 +141,40 @@ namespace PetsFarm.PD
             return bResult;
         }
 
+        private Boolean isFreeCellByDirection(int iDirect)
+        {
+            Boolean oResult = false;
+            if (iDirect == 1)
+            {//up
+                if (iRow - 1 > 0)
+                {
+                    oResult = (farmOwner.getFarmCell(iCol, iRow - 1) == null);
+                }
+            }
+            else if (iDirect == 2)
+            {//right
+                if (iCol + 1 < farmOwner.getFarmCols())
+                {
+                    oResult = (farmOwner.getFarmCell(iCol + 1, iRow) == null);
+                }
+            }
+            else if (iDirect == 3)
+            {//left
+                if (iCol - 1 > 0)
+                {
+                    oResult = (farmOwner.getFarmCell(iCol - 1, iRow) == null);
+                }
+            }
+            else if (iDirect == 4)
+            {//down
+                if (iRow + 1 < farmOwner.getFarmRows())
+                {
+                    oResult = (farmOwner.getFarmCell(iCol, iRow + 1) == null);
+                }
+            }
+            return oResult;
+        }
+
         private void moveByDirection(int iDirect)
         {
             if (iDirect == 1)
@@ -228,6 +216,27 @@ namespace PetsFarm.PD
             //abstract
         }
 
+        private int getFirstFreeDirection()
+        {
+            int iDirect = 0;
+            Boolean canSelect = true;
+            for (int i = 1; i <= 4; i++)
+            {
+                if (canSelect)
+                {
+                    if (canMoveByDirection(i))
+                    {
+                        if (isFreeCellByDirection(i))
+                        {
+                            iDirect = i;
+                            canSelect = false;
+                        }
+                    }
+                }
+            }
+            return iDirect;
+        }
+
         public String doTick()
         {
             String sPetState = String.Empty;
@@ -251,9 +260,7 @@ namespace PetsFarm.PD
                      {//can move by direction & fuck this pet
                         //sPetState = "LOVE!!!";
                          if (!aPet.HasLove())
-                         {
                              fuckPetByLove(aPet);
-                         }
                      }
                 }
             }
@@ -263,62 +270,20 @@ namespace PetsFarm.PD
                 iLoveTickCount = iLoveTickCount - 1;
                 if (!IsPetMale() && (iLoveTickCount == 0))
                 {//try birth new same pet
-                    int iDirect = 0;
-
-                    if (iRow - 1 >= 0)
-                        iDirect = 1;
-                    else if (iCol + 1 <= farmOwner.getFarmCols() - 1)
-                        iDirect = 2;
-                    else if (iCol - 1 >= 0)
-                        iDirect = 3;
-                    else if (iRow + 1 <= farmOwner.getFarmRows() - 1)
-                        iDirect = 4;
-
-                    if (iDirect == 1)
-                        BirthPet(iCol, iRow - 1);
-                    else if (iDirect == 2)
-                        BirthPet(iCol + 1, iRow);
-                    else if (iDirect == 3)
-                        BirthPet(iCol - 1, iRow);
-                    else if (iDirect == 4)
-                        BirthPet(iCol, iRow + 1);
-
-
-                    /*if (iRow - 1 >= 0)
-                    {//up
-                        if (farmOwner.getFarmCell(iCol, iRow - 1) == null)
-                        {
-                            sPetState = "-- Birth!!!";
+                    int iDirect = getFirstFreeDirection(); // 0;
+                    if (iDirect > 0)
+                    {
+                        if (iDirect == 1)
                             BirthPet(iCol, iRow - 1);
-                        }
-                    }
-                    else if (iCol + 1 <= farmOwner.getFarmCols() - 1)
-                    {//right
-                        if (farmOwner.getFarmCell(iCol + 1, iRow) == null)
-                        {
-                            sPetState = "-- Birth!!!";
+                        else if (iDirect == 2)
                             BirthPet(iCol + 1, iRow);
-                        }
-                    }
-                    else if (iCol - 1 >= 0)
-                    {//left
-                        if (farmOwner.getFarmCell(iCol - 1, iRow) == null)
-                        {
-                            sPetState = "-- Birth!!!";
+                        else if (iDirect == 3)
                             BirthPet(iCol - 1, iRow);
-                        }
-                    }
-                    else if (iRow + 1 <= farmOwner.getFarmRows() - 1)
-                    {//down
-                        if (farmOwner.getFarmCell(iCol, iRow + 1) == null)
-                        {
-                            sPetState = "-- Birth!!!";
+                        else if (iDirect == 4)
                             BirthPet(iCol, iRow + 1);
-                        }
-                    }*/
+                    }
                 }
                 //
-
             }
             return nickName + ":" + sPetState;
         }

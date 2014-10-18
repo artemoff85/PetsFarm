@@ -22,7 +22,6 @@ namespace PetsFarm
         int iColsCount;
         int iRowsCount;
         int iPetsCount;
-        String selectedPetNickName;
 
         private void InitFormVars()
         {
@@ -30,11 +29,11 @@ namespace PetsFarm
             iColsCount = 3;
             iRowsCount = 3;
             iPetsCount = 4;
-            selectedPetNickName = String.Empty;
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
             aFont = new Font("System", 10);
             aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
+            lbPetsCount.Text = aFarm.getPetsCount().ToString();
         }
 
         private void DoOnFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
@@ -122,8 +121,8 @@ namespace PetsFarm
             int selectedIndex = listBox1.SelectedIndex;
             if (selectedIndex >= 0)
             {
-                selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
-                aFarm.selectPet(aFarm.getFarmPetByNickname(selectedPetNickName));
+                //selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
+                aFarm.selectPet(aFarm.getFarmPetByNickname(getSelectedPetNickName(listBox1.Items[selectedIndex].ToString())));
                 lbVoice.Text = aFarm.getSelectedPet().doVoice();
                 pictureBox1.Refresh();
             }

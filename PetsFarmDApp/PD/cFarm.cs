@@ -17,13 +17,13 @@ namespace PetsFarm.PD
 
         public cFarm(int _cols, int _rows, int _petsCount)
         {
-            //fill farm by empty cells
-            cPet[,] _Farm = new cPet[_cols, _rows];
             petsList = new List<cPet>();
+            //fill farm by empty cells
+            farmMap = new cPet[_cols, _rows];
             for (int c = 0; c < _cols; c++)
                 for (int r = 0; r < _rows; r++)
-                    _Farm[c, r] = null;
-            farmMap = _Farm;
+                    farmMap[c, r] = null;
+
             //add pets to farm
             int[] rCols = new int[_petsCount];
             for (int i = 0; i < rCols.Length; i++)
@@ -36,16 +36,16 @@ namespace PetsFarm.PD
             int iPet = 0;
             for (int i = 0; i < _petsCount; i++)
             {
-                iPet = cRandomInt.GetRandomNumber(1, 3);//rPet.Next(1, 3);
+                iPet = cRandomInt.GetRandomNumber(1, 3);
                 if (iPet == iPetSCat)
                 {
-                    //petsList.Add(new cCat(this, rCols[i], rRows[i], "Kitty" + rCols[i].ToString() + rRows[i].ToString()));
-                    new cCat(this, rCols[i], rRows[i], "Kitty" + i);
+                    if (farmMap[rCols[i], rRows[i]] == null)
+                        new cCat(this, rCols[i], rRows[i], "Kitty" + i);
                 }
-                if (iPet == iPetSDog)
+                else if (iPet == iPetSDog)
                 {
-                    //petsList.Add(new cDog(this, rCols[i], rRows[i], "Doge" + rCols[i].ToString() + rRows[i].ToString()));
-                    new cDog(this, rCols[i], rRows[i], "Doge" + i);
+                    if (farmMap[rCols[i], rRows[i]] == null)
+                        new cDog(this, rCols[i], rRows[i], "Doge" + i);
                 }
             }
         }
@@ -60,15 +60,6 @@ namespace PetsFarm.PD
         }
         public object getFarmCell(int _col, int _row)
         {
-            /*
-            object oResult = null;
-            if ((_col < getFarmCols()) && (_row < getFarmRows()))
-            {
-                oResult = farmMap[_col, _row];
-            }
-            
-            return oResult;
-            */
             return farmMap[_col, _row];
         }
         public cPet getFarmPetByNickname(String sNickname)
