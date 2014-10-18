@@ -29,8 +29,8 @@ namespace PetsFarm.PD
             iCol = _col;
             iRow = _row;
             iLoveTickCount = 0;
-            iAge = 1;
-            iMaxAge = 10;
+            iAge = 0;
+            iMaxAge = cRandomInt.GetRandomNumber(40, 50);
             setPetGender();
             farmOwner = _farmOwner;
             farmOwner.setPetOnFarmCell(iCol, iRow, this);
@@ -232,13 +232,13 @@ namespace PetsFarm.PD
 
         public void fuckPetByLove(cPet aPet)
         {
-            iLoveTickCount = 2;
+            iLoveTickCount = 1;
             aPet.getFuckedByPet();
         }
 
         public void getFuckedByPet()
         {
-            iLoveTickCount = 2;
+            iLoveTickCount = 1;
         }
 
         public Boolean HasLove()
@@ -256,29 +256,36 @@ namespace PetsFarm.PD
             //abstract
         }
 
+        private void birthOnePet()
+        {
+            int iDirect = getFirstFreeDirection();
+            if (iDirect > 0)
+            {
+                if (iDirect == 1)
+                    BirthPet(iCol, iRow - 1);
+                else if (iDirect == 2)
+                    BirthPet(iCol + 1, iRow);
+                else if (iDirect == 3)
+                    BirthPet(iCol - 1, iRow);
+                else if (iDirect == 4)
+                    BirthPet(iCol, iRow + 1);
+            }
+        }
+
         private void processLove()
         {
             iLoveTickCount = iLoveTickCount - 1;
             if (!IsPetMale() && (iLoveTickCount == 0))
             {//try birth new same pet
-                int iDirect = getFirstFreeDirection();
-                if (iDirect > 0)
-                {
-                    if (iDirect == 1)
-                        BirthPet(iCol, iRow - 1);
-                    else if (iDirect == 2)
-                        BirthPet(iCol + 1, iRow);
-                    else if (iDirect == 3)
-                        BirthPet(iCol - 1, iRow);
-                    else if (iDirect == 4)
-                        BirthPet(iCol, iRow + 1);
-                }
+                int birthCountTime = cRandomInt.GetRandomNumber(1, 3);
+                for (int i = 1; i <= birthCountTime; i++ )
+                    birthOnePet();
             }
         }
 
         private void processMove()
         {
-            int iDirect = cRandomInt.GetRandomNumber(0, 5);
+            int iDirect = cRandomInt.GetRandomNumber(1, 5);
             object oCell = scanCellByDirection(iDirect);
             if (oCell == null)
             {//can move by direction
@@ -307,7 +314,7 @@ namespace PetsFarm.PD
 
         private Boolean isAdult()
         {
-            return iAge > (iMaxAge / 2);
+            return iAge > (iMaxAge / 3);
         }
 
         public Boolean isAlive()

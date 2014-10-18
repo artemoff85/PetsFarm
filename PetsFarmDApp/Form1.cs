@@ -26,14 +26,15 @@ namespace PetsFarm
         private void InitFormVars()
         {
             iPxCellSize = 15;
-            iColsCount = 10;
-            iRowsCount = 10;
-            iPetsCount = 50;
+            iColsCount = Convert.ToInt32(tbCols.Text);
+            iRowsCount = Convert.ToInt32(tbRows.Text); ;
+            iPetsCount = Convert.ToInt32(tbPCount.Text); ;
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
             aFont = new Font("System", 10);
             aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
             lbPetsCount.Text = aFarm.getPetsCount().ToString();
+            lbFarmSize.Text = (iRowsCount * iColsCount).ToString();
         }
 
         private void DoOnFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
@@ -96,6 +97,7 @@ namespace PetsFarm
             cPet aPet = aFarm.getSelectedPet();
             if (aPet != null && aPet.isAlive())
                 listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
+            lbFarmAge.Text = aFarm.getAge().ToString();
             pictureBox1.Refresh();
         }
 
@@ -126,6 +128,16 @@ namespace PetsFarm
                 lbVoice.Text = aFarm.getSelectedPet().doVoice();
                 pictureBox1.Refresh();
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
