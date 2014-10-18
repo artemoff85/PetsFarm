@@ -24,5 +24,11 @@ namespace PetsFarm.PD
             int i = farmOwner.getPetsCount();
             new cCat(farmOwner, _col, _row, "Kitty" + i);
         }
+
+        protected override void changePetTypeByAge()
+        {
+            sPetType = "K";
+        }
+
     }
 }

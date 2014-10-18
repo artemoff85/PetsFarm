@@ -13,6 +13,8 @@ namespace PetsFarm.PD
         private int iRow;
         private int iGender;
         private int iLoveTickCount;
+        private int iAge;
+        private int iMaxAge;
         private String nickName;
         protected String sPetType;
 
@@ -27,6 +29,8 @@ namespace PetsFarm.PD
             iCol = _col;
             iRow = _row;
             iLoveTickCount = 0;
+            iAge = 1;
+            iMaxAge = 10;
             setPetGender();
             farmOwner = _farmOwner;
             farmOwner.setPetOnFarmCell(iCol, iRow, this);
@@ -195,27 +199,6 @@ namespace PetsFarm.PD
             }
         }
 
-        public void fuckPetByLove(cPet aPet)
-        {
-            iLoveTickCount = 2;
-            aPet.getFuckedByPet();
-        }
-
-        public void getFuckedByPet()
-        {
-            iLoveTickCount = 2;
-        }
-
-        public Boolean HasLove()
-        {
-            return iLoveTickCount > 0;
-        }
-
-        protected virtual void BirthPet(int _col, int _row)
-        {
-            //abstract
-        }
-
         private int getFirstFreeDirection()
         {
             int iDirect = 0;
@@ -237,55 +220,104 @@ namespace PetsFarm.PD
             return iDirect;
         }
 
-        public String doTick()
+        public void fuckPetByLove(cPet aPet)
         {
-            String sPetState = String.Empty;
-            if (iLoveTickCount == 0)
-            {
-                int iDirect = cRandomInt.GetRandomNumber(0, 5);
-                object oCell = scanCellByDirection(iDirect);
-                if (oCell == null)
-                {//can move by direction
-                    //if can move on cell by direction
-                    if (canMoveByDirection(iDirect))
-                    {
-                        moveByDirection(iDirect);
-                        sPetState = "move " + iDirect.ToString();
-                    }
-                }
-                else
+            iLoveTickCount = 2;
+            aPet.getFuckedByPet();
+        }
+
+        public void getFuckedByPet()
+        {
+            iLoveTickCount = 2;
+        }
+
+        public Boolean HasLove()
+        {
+            return iLoveTickCount > 0;
+        }
+
+        protected virtual void BirthPet(int _col, int _row)
+        {
+            //abstract
+        }
+
+        protected virtual void changePetTypeByAge()
+        {
+            //abstract
+        }
+
+        private void processLove()
+        {
+            iLoveTickCount = iLoveTickCount - 1;
+            if (!IsPetMale() && (iLoveTickCount == 0))
+            {//try birth new same pet
+                int iDirect = getFirstFreeDirection();
+                if (iDirect > 0)
                 {
-                    cPet aPet = (cPet)oCell;
-                    if ((this.getPetSimbol() == aPet.getPetSimbol()) && (this.IsPetMale() && !aPet.IsPetMale()))
-                     {//can move by direction & fuck this pet
-                        //sPetState = "LOVE!!!";
-                         if (!aPet.HasLove())
-                             fuckPetByLove(aPet);
-                     }
+                    if (iDirect == 1)
+                        BirthPet(iCol, iRow - 1);
+                    else if (iDirect == 2)
+                        BirthPet(iCol + 1, iRow);
+                    else if (iDirect == 3)
+                        BirthPet(iCol - 1, iRow);
+                    else if (iDirect == 4)
+                        BirthPet(iCol, iRow + 1);
+                }
+            }
+        }
+
+        private void processMove()
+        {
+            int iDirect = cRandomInt.GetRandomNumber(0, 5);
+            object oCell = scanCellByDirection(iDirect);
+            if (oCell == null)
+            {//can move by direction
+                //if can move on cell by direction
+                if (canMoveByDirection(iDirect))
+                {
+                    moveByDirection(iDirect);
+                    //sPetState = "move " + iDirect.ToString();
                 }
             }
             else
             {
-                //sPetState = "LOVE!!!";
-                iLoveTickCount = iLoveTickCount - 1;
-                if (!IsPetMale() && (iLoveTickCount == 0))
-                {//try birth new same pet
-                    int iDirect = getFirstFreeDirection(); // 0;
-                    if (iDirect > 0)
-                    {
-                        if (iDirect == 1)
-                            BirthPet(iCol, iRow - 1);
-                        else if (iDirect == 2)
-                            BirthPet(iCol + 1, iRow);
-                        else if (iDirect == 3)
-                            BirthPet(iCol - 1, iRow);
-                        else if (iDirect == 4)
-                            BirthPet(iCol, iRow + 1);
-                    }
+                cPet aPet = (cPet)oCell;
+                if ((this.getPetSimbol() == aPet.getPetSimbol()) && (this.IsPetMale() && !aPet.IsPetMale()))
+                {//can move by direction & fuck this pet
+                    if (!aPet.HasLove() && isAdult())
+                        fuckPetByLove(aPet);
                 }
-                //
             }
-            return nickName + ":" + sPetState;
+        }
+
+        private Boolean isAdult()
+        {
+            return iAge > (iMaxAge / 2);
+        }
+
+        private void processAge()
+        {
+            iAge = iAge + 1;
+            if (isAdult())
+            {
+                changePetTypeByAge();
+            }
+        }
+
+        public String doTick()
+        {
+            String sPetState = String.Empty;
+            if (iLoveTickCount == 0)
+            {//Move
+                processMove();
+            }
+            else
+            {//Love
+                processLove();
+            }
+            processAge();
+            //return pet status string
+            return nickName + ":[age=" + iAge.ToString() + "]:" + sPetState;
         }
 
     }

@@ -26,9 +26,9 @@ namespace PetsFarm
         private void InitFormVars()
         {
             iPxCellSize = 15;
-            iColsCount = 3;
-            iRowsCount = 3;
-            iPetsCount = 4;
+            iColsCount = 10;
+            iRowsCount = 10;
+            iPetsCount = 50;
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
             aFont = new Font("System", 10);
