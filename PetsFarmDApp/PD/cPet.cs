@@ -261,9 +261,30 @@ namespace PetsFarm.PD
             {
                 //sPetState = "LOVE!!!";
                 iLoveTickCount = iLoveTickCount - 1;
-                if (!IsPetMale() && (iLoveTickCount == 1))
+                if (!IsPetMale() && (iLoveTickCount == 0))
                 {//try birth new same pet
+                    int iDirect = 0;
+
                     if (iRow - 1 >= 0)
+                        iDirect = 1;
+                    else if (iCol + 1 <= farmOwner.getFarmCols() - 1)
+                        iDirect = 2;
+                    else if (iCol - 1 >= 0)
+                        iDirect = 3;
+                    else if (iRow + 1 <= farmOwner.getFarmRows() - 1)
+                        iDirect = 4;
+
+                    if (iDirect == 1)
+                        BirthPet(iCol, iRow - 1);
+                    else if (iDirect == 2)
+                        BirthPet(iCol + 1, iRow);
+                    else if (iDirect == 3)
+                        BirthPet(iCol - 1, iRow);
+                    else if (iDirect == 4)
+                        BirthPet(iCol, iRow + 1);
+
+
+                    /*if (iRow - 1 >= 0)
                     {//up
                         if (farmOwner.getFarmCell(iCol, iRow - 1) == null)
                         {
@@ -294,8 +315,9 @@ namespace PetsFarm.PD
                             sPetState = "-- Birth!!!";
                             BirthPet(iCol, iRow + 1);
                         }
-                    }
+                    }*/
                 }
+                //
 
             }
             return nickName + ":" + sPetState;

@@ -22,16 +22,14 @@ namespace PetsFarm
         int iColsCount;
         int iRowsCount;
         int iPetsCount;
-        int selectedIndex;
         String selectedPetNickName;
 
         private void InitFormVars()
         {
             iPxCellSize = 15;
-            iColsCount = 10;
-            iRowsCount = 10;
-            iPetsCount = 50;
-            selectedIndex = 0;
+            iColsCount = 3;
+            iRowsCount = 3;
+            iPetsCount = 4;
             selectedPetNickName = String.Empty;
             aPen = new Pen(Color.Red, 2);
             aBrush = new SolidBrush(Color.Green);
@@ -39,21 +37,30 @@ namespace PetsFarm
             aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
         }
 
-        private String GetFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
+        private void DoOnFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
         {
-            String sResult = "___";
             int iPosX = _clickLocation.X / _iPxCellSize;
             int iPosY = _clickLocation.Y / _iPxCellSize;
-            object aCell = _aFarm.getFarmCell(iPosX, iPosY);
-            if (aCell != null)
+            if ((iPosX < _aFarm.getFarmCols()) && (iPosY < aFarm.getFarmRows()))
             {
-                cPet aPet = (cPet)aCell;
-                sResult = aPet.doVoice();
-                aFarm.selectPet(aPet);
-                //listBox1.SetSelected(selectedIndex, false);
-                selectedIndex = -1;
+                object aCell = _aFarm.getFarmCell(iPosX, iPosY);
+                if (aCell != null)
+                {
+                    cPet aPet = (cPet)aCell;
+                    lbVoice.Text = aPet.doVoice();
+                    aFarm.selectPet(aPet);
+                }
+                else
+                {
+                    aFarm.selectPet(null);
+                    lbVoice.Text = "empty";
+                }
             }
-            return sResult;
+            else
+            {
+                aFarm.selectPet(null);
+                lbVoice.Text = "void";
+            }
         }
 
         public Form1()
@@ -76,21 +83,21 @@ namespace PetsFarm
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             MouseEventArgs mouseEvnt = (MouseEventArgs)e;
-            lbVoice.Text = GetFarmClick(mouseEvnt.Location, aFarm, iPxCellSize);
+            DoOnFarmClick(mouseEvnt.Location, aFarm, iPxCellSize);
             pictureBox1.Refresh();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             String[] sLog = aFarm.doTick().ToArray();
+            lbPetsCount.Text = aFarm.getPetsCount().ToString();
+            listBox1.Items.Clear();
             if (sLog != null)
-            {
-                listBox1.Items.Clear();
                 listBox1.Items.AddRange(sLog);
-                lbPetsCount.Text = aFarm.getPetsCount().ToString(); // listBox1.Items.Count.ToString(); //sLog.Length.ToString();
-                pictureBox1.Refresh();
-                if ((aFarm.getSelectedPet() != null) && (selectedIndex > 0)) { listBox1.SetSelected(selectedIndex, true); }
-            }
+            cPet aPet = aFarm.getSelectedPet();
+            if (aPet != null)
+                listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
+            pictureBox1.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -112,7 +119,7 @@ namespace PetsFarm
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            selectedIndex = listBox1.SelectedIndex;
+            int selectedIndex = listBox1.SelectedIndex;
             if (selectedIndex >= 0)
             {
                 selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
