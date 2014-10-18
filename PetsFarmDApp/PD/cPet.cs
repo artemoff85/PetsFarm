@@ -65,10 +65,20 @@ namespace PetsFarm.PD
         {
             iRow = _iRow;
         }
+
+        protected virtual String doPetVoice()
+        {
+            //abstract
+            return "";
+        }
         
         public virtual String doVoice()
         {
-            return nickName + ": ";
+            String sResult = String.Empty;
+            if (isAlive()){
+                sResult = nickName + ": " + doPetVoice();
+            }
+            return sResult;
         }
 
         public void moveUp()
@@ -290,9 +300,19 @@ namespace PetsFarm.PD
             }
         }
 
+        public int getDiePastTime()
+        {
+            return iAge - iMaxAge;
+        }
+
         private Boolean isAdult()
         {
             return iAge > (iMaxAge / 2);
+        }
+
+        public Boolean isAlive()
+        {
+            return iAge <= iMaxAge;
         }
 
         private void processAge()
@@ -307,15 +327,19 @@ namespace PetsFarm.PD
         public String doTick()
         {
             String sPetState = String.Empty;
-            if (iLoveTickCount == 0)
-            {//Move
-                processMove();
-            }
-            else
-            {//Love
-                processLove();
+            if (isAlive())
+            {
+                if (iLoveTickCount == 0)
+                {//Move
+                    processMove();
+                }
+                else
+                {//Love
+                    processLove();
+                }
             }
             processAge();
+
             //return pet status string
             return nickName + ":[age=" + iAge.ToString() + "]:" + sPetState;
         }

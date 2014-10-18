@@ -52,7 +52,7 @@ namespace PetsFarm
                 else
                 {
                     aFarm.selectPet(null);
-                    lbVoice.Text = "empty";
+                    lbVoice.Text = "";
                 }
             }
             else
@@ -94,7 +94,7 @@ namespace PetsFarm
             if (sLog != null)
                 listBox1.Items.AddRange(sLog);
             cPet aPet = aFarm.getSelectedPet();
-            if (aPet != null)
+            if (aPet != null && aPet.isAlive())
                 listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
             pictureBox1.Refresh();
         }

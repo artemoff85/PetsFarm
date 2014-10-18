@@ -12,6 +12,7 @@ namespace PetsFarm.PD
         private int iPetSDog = 2;
         private cPet[,] farmMap = null;
         private List<cPet> petsList = null;
+        //private int[] petsRemoveIndexes;
         private cPet selectedPet = null;
         private Boolean tickLock = false;
 
@@ -107,6 +108,11 @@ namespace PetsFarm.PD
             return petsList.Count;
         }
 
+        /*public void diePet(int col, int row)
+        {
+            petsList.Remove(farmMap[col, row]);
+        }*/
+
         public List<String> doTick()
         {
             List<String> sLog = null;
@@ -116,12 +122,23 @@ namespace PetsFarm.PD
                 sLog = new List<String>();
                 int oldCount = petsList.Count;
 
-                //foreach (cPet aPet in petsList)
-                //{
                 for (int i = 0; i < oldCount; i++)
-                    sLog.Add(petsList[i].doTick());
-                    //sLog.Add(aPet.doTick());
-                //}
+                {
+                    cPet aPet = petsList[i];
+                    //if (aPet.isAlive())
+                    sLog.Add(aPet.doTick());
+                }
+
+                //foreach(cPet _Pet in petsList)
+                for (int i = petsList.Count - 1; i >= 0; i--) 
+                {
+                    if (!petsList[i].isAlive() && petsList[i].getDiePastTime() > 3)
+                    {
+                        farmMap[petsList[i].getPetCol(), petsList[i].getPetRow()] = null;
+                        petsList.RemoveAt(i);
+                    }
+                }
+
                 tickLock = false;
             }
             return sLog;

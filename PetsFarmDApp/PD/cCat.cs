@@ -14,9 +14,9 @@ namespace PetsFarm.PD
             sPetType = "k";
         }
 
-        public override String doVoice()
+        protected override String doPetVoice()
         {
-            return base.doVoice() + "Mawoo!";
+            return "Mawoo!";
         }
 
         protected override void BirthPet(int _col, int _row)
