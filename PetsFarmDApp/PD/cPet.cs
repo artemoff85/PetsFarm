@@ -277,7 +277,7 @@ namespace PetsFarm.PD
             iLoveTickCount = iLoveTickCount - 1;
             if (!IsPetMale() && (iLoveTickCount == 0))
             {//try birth new same pet
-                int birthCountTime = cRandomInt.GetRandomNumber(1, 3);
+                int birthCountTime = cRandomInt.GetRandomNumber(1, 2);
                 for (int i = 1; i <= birthCountTime; i++ )
                     birthOnePet();
             }

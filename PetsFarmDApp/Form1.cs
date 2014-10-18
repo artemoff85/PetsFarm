@@ -35,6 +35,7 @@ namespace PetsFarm
             aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
             lbPetsCount.Text = aFarm.getPetsCount().ToString();
             lbFarmSize.Text = (iRowsCount * iColsCount).ToString();
+            chart1.ChartAreas[0].AxisY.Maximum = iRowsCount * iColsCount;
         }
 
         private void DoOnFarmClick(Point _clickLocation, cFarm _aFarm, int _iPxCellSize)
@@ -98,6 +99,7 @@ namespace PetsFarm
             if (aPet != null && aPet.isAlive())
                 listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
             lbFarmAge.Text = aFarm.getAge().ToString();
+            chart1.Series[0].Points.AddXY(aFarm.getAge(), aFarm.getPetsCount());
             pictureBox1.Refresh();
         }
 
