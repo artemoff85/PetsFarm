@@ -100,6 +100,9 @@ namespace PetsFarm
                 listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
             lbFarmAge.Text = aFarm.getAge().ToString();
             chart1.Series[0].Points.AddXY(aFarm.getAge(), aFarm.getPetsCount());
+            chart1.Series[1].Points.AddXY(aFarm.getAge(), aFarm.getCatsCount());
+            chart1.Series[2].Points.AddXY(aFarm.getAge(), aFarm.getDogsCount());
+
             pictureBox1.Refresh();
         }
 

@@ -15,6 +15,8 @@ namespace PetsFarm.PD
         private List<cPet> petsList = null;
         private cPet selectedPet = null;
         private Boolean tickLock = false;
+        private int iCats = 0;
+        private int iDogs = 0;
 
         public cFarm(int _cols, int _rows, int _petsCount)
         {
@@ -41,12 +43,18 @@ namespace PetsFarm.PD
                 if (iPet == iPetSCat)
                 {
                     if (farmMap[rCols[i], rRows[i]] == null)
+                    {
                         new cCat(this, rCols[i], rRows[i], "Kitty" + i);
+                        //iCats++;
+                    }
                 }
                 else if (iPet == iPetSDog)
                 {
                     if (farmMap[rCols[i], rRows[i]] == null)
+                    {
                         new cDog(this, rCols[i], rRows[i], "Doge" + i);
+                        //iDogs++;
+                    }
                 }
             }
         }
@@ -84,6 +92,24 @@ namespace PetsFarm.PD
         {
             farmMap[_col, _row] = _pet;
             petsList.Add(_pet);
+            if (_pet is cCat)
+            {
+                iCats++;
+            }
+            else if (_pet is cDog)
+            {
+                iDogs++;
+            }
+        }
+
+        public int getCatsCount()
+        {
+            return iCats;
+        }
+
+        public int getDogsCount()
+        {
+            return iDogs;
         }
 
         public void movePetOnFarmCell(int _cCol, int _cRow, int _nCol, int _nRow)
@@ -135,6 +161,14 @@ namespace PetsFarm.PD
                     if (!petsList[i].isAlive() && petsList[i].getDiePastTime() > 1)
                     {
                         farmMap[petsList[i].getPetCol(), petsList[i].getPetRow()] = null;
+                        if (petsList[i] is cCat)
+                        {
+                            iCats--;
+                        }
+                        else if (petsList[i] is cDog)
+                        {
+                            iDogs--;
+                        }
                         petsList.RemoveAt(i);
                     }
                 }
