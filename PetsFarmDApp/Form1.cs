@@ -35,6 +35,10 @@ namespace PetsFarm
             aFarm = new cFarm(iColsCount, iRowsCount, iPetsCount);
             lbPetsCount.Text = aFarm.getPetsCount().ToString();
             lbFarmSize.Text = (iRowsCount * iColsCount).ToString();
+            listBox1.Items.Clear();
+            chart1.Series[0].Points.Clear();
+            chart1.Series[1].Points.Clear();
+            chart1.Series[2].Points.Clear();
             chart1.ChartAreas[0].AxisY.Maximum = iRowsCount * iColsCount;
         }
 
@@ -92,9 +96,18 @@ namespace PetsFarm
         {
             String[] sLog = aFarm.doTick().ToArray();
             lbPetsCount.Text = aFarm.getPetsCount().ToString();
-            listBox1.Items.Clear();
-            if (sLog != null)
-                listBox1.Items.AddRange(sLog);
+            //listBox1.Items.Clear();
+            //Tick logging
+            //if (sLog != null && gbxLog.Visible)
+                //listBox1.Items.AddRange(sLog);
+            if (gbxLog.Visible)
+                listBox1.Items.AddRange(
+                    new String[] {
+                        "--- Age " + aFarm.getAge().ToString(),
+                        "Pets count = " + aFarm.getPetsCount().ToString(),
+                    }
+                );
+            //
             cPet aPet = aFarm.getSelectedPet();
             if (aPet != null && aPet.isAlive())
                 listBox1.SetSelected(listBox1.FindString(aPet.getPetNickname()), true);
@@ -102,8 +115,10 @@ namespace PetsFarm
             chart1.Series[0].Points.AddXY(aFarm.getAge(), aFarm.getPetsCount());
             chart1.Series[1].Points.AddXY(aFarm.getAge(), aFarm.getCatsCount());
             chart1.Series[2].Points.AddXY(aFarm.getAge(), aFarm.getDogsCount());
-
+            lbCatsCount.Text = aFarm.getCatsCount().ToString();
+            lbDogsCount.Text = aFarm.getDogsCount().ToString();
             pictureBox1.Refresh();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -128,21 +143,29 @@ namespace PetsFarm
             int selectedIndex = listBox1.SelectedIndex;
             if (selectedIndex >= 0)
             {
-                //selectedPetNickName = getSelectedPetNickName(listBox1.Items[selectedIndex].ToString());
                 aFarm.selectPet(aFarm.getFarmPetByNickname(getSelectedPetNickName(listBox1.Items[selectedIndex].ToString())));
                 lbVoice.Text = aFarm.getSelectedPet().doVoice();
                 pictureBox1.Refresh();
             }
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void nudTimeout_ValueChanged(object sender, EventArgs e)
         {
-
+            timer1.Enabled = false;
+            timer1.Interval = Convert.ToInt32(nudTimeout.Value);
+            timer1.Enabled = true;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
         {
-
+            gbxLog.Visible = !gbxLog.Visible;
+            if (gbxLog.Visible)
+            {
+                bViewLog.Text = "Hide log";
+            }else
+            {
+                bViewLog.Text = "View log";
+            }
         }
     }
 }
