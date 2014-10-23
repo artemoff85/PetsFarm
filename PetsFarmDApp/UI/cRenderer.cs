@@ -19,6 +19,8 @@ namespace PetsFarm.UI
         private static int iPxCellSize;
         private static Brush maleColor = Brushes.Blue;
         private static Brush femaleColor = Brushes.Red;
+        private static Brush petDog = Brushes.Blue;
+        private static Brush petCat = Brushes.Red;
         private static Brush dieColor = Brushes.Silver;
 
 
@@ -35,6 +37,13 @@ namespace PetsFarm.UI
         {
             Brush bResult = femaleColor;
             if (aPet.IsPetMale()) { bResult = maleColor; }
+            return bResult;
+        }
+
+        private static Brush RenderPetClass(cPet aPet)
+        {
+            Brush bResult = petCat;
+            if (aPet is cDog ) { bResult = petDog; }
             return bResult;
         }
 
@@ -74,7 +83,8 @@ namespace PetsFarm.UI
                         aPet = (cPet)aCell;
                         if (aPet.isAlive())
                         {
-                            gCanvas.DrawString(aPet.getPetSimbol(), aFont, RenderPetGender(aPet), new Point(iFarmX, iFarmY));
+                            //gCanvas.DrawString(aPet.getPetSimbol(), aFont, RenderPetGender(aPet), new Point(iFarmX, iFarmY));
+                            gCanvas.DrawString(aPet.getPetSimbol(), aFont, RenderPetClass(aPet), new Point(iFarmX, iFarmY));
                             RenderPetsLove(aPet);
                         }
                         else
